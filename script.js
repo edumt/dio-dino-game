@@ -4,7 +4,7 @@ const background = document.querySelector(".background");
 let isJumping = false;
 let isGameOver = false;
 let position = 0;
-const INITIAL_VELOCITY = 25;
+const INITIAL_VELOCITY = 20;
 let velocity = INITIAL_VELOCITY;
 const acceleration = -1;
 
