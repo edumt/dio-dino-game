@@ -5,11 +5,11 @@ let isJumping = false;
 let isGameOver = false;
 let position = 0;
 const INITIAL_VELOCITY = 20;
+const ACCELERATION = -1;
 let velocity = INITIAL_VELOCITY;
-const acceleration = -1;
 
-function handleKeyUp(event) {
-  if (event.keyCode === 32) {
+function handleKeyDown(event) {
+  if (event.keyCode === 32 || event.keyCode === 38 || event.keyCode === 87) {
     if (!isJumping) {
       jump();
     }
@@ -20,15 +20,15 @@ function jump() {
   isJumping = true;
 
   let upInterval = setInterval(() => {
-    velocity += acceleration;
+    velocity += ACCELERATION;
     console.log(position, velocity);
-    if (position >= 150) {
+    if (velocity <= 0) {
       // Descendo
       clearInterval(upInterval);
 
       let downInterval = setInterval(() => {
-        velocity += acceleration;
-        if (position + (velocity + acceleration) <= 0) {
+        velocity += ACCELERATION;
+        if (position + velocity + ACCELERATION <= 0) {
           clearInterval(downInterval);
           isJumping = false;
           position = 0;
@@ -79,4 +79,4 @@ function createCactus() {
 }
 
 createCactus();
-document.addEventListener("keyup", handleKeyUp);
+document.addEventListener("keydown", handleKeyDown);
