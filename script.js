@@ -1,5 +1,6 @@
 const dino = document.querySelector(".dino");
 const background = document.querySelector(".background");
+const scoreElement = document.querySelector("#score");
 
 let isJumping = false;
 let isGameOver = false;
@@ -7,6 +8,8 @@ let position = 0;
 const INITIAL_VELOCITY = 20;
 const ACCELERATION = -1;
 let velocity = INITIAL_VELOCITY;
+const initialTime = new Date();
+let score = 0;
 
 function handleKeyDown(event) {
   if (event.keyCode === 32 || event.keyCode === 38 || event.keyCode === 87) {
@@ -21,7 +24,8 @@ function jump() {
 
   let upInterval = setInterval(() => {
     velocity += ACCELERATION;
-    console.log(position, velocity);
+    scoreElement.textContent = score;
+
     if (velocity <= 0) {
       // Descendo
       clearInterval(upInterval);
@@ -66,8 +70,9 @@ function createCactus() {
       background.removeChild(cactus);
     } else if (cactusPosition > 0 && cactusPosition < 60 && position < 60) {
       // Game over
-      //clearInterval(leftTimer);
-      //isGameOver = true;
+      clearInterval(scoreTick);
+      clearInterval(leftTimer);
+      isGameOver = true;
       //document.body.innerHTML = '<h1 class="game-over">Fim de jogo</h1>';
     } else {
       cactusPosition -= 10;
@@ -78,5 +83,14 @@ function createCactus() {
   setTimeout(createCactus, randomTime);
 }
 
+const accumulateScore = () => {
+  let scoreTick = setInterval(() => {
+    score = new Date() - initialTime;
+    scoreElement.textContent = score;
+  }, 20);
+  return scoreTick;
+};
+
 createCactus();
+const scoreTick = accumulateScore();
 document.addEventListener("keydown", handleKeyDown);
